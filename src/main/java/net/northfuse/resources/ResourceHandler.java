@@ -17,9 +17,15 @@ import java.util.List;
 abstract class ResourceHandler {
 	private final List<Resource> resources = new LinkedList<Resource>();
 	private final MediaType mediaType;
+	private boolean debug;
+	private Resource resource;
 
 	ResourceHandler(MediaType mediaType) {
 		this.mediaType = mediaType;
+	}
+
+	public void setDebug(boolean debug) {
+		this.debug = debug;
 	}
 
 	public void setResources(List<Resource> resources) {
@@ -27,6 +33,18 @@ abstract class ResourceHandler {
 	}
 
 	public Resource aggregatedResource() {
+		if (debug) {
+			return buildResource();
+		} else {
+			return resource;
+		}
+	}
+
+	public void generateResource() {
+		resource = buildResource();
+	}
+
+	private Resource buildResource() {
 		final byte[] data = aggregate();
 		final long lastModified = new Date().getTime();
 		return new ByteArrayResource(data) {

@@ -23,7 +23,7 @@ import java.util.List;
 /**
  * @author tylers2
  */
-abstract class ResourceHandler implements ApplicationContextAware {
+public abstract class ResourceHandler implements ApplicationContextAware {
 	private final List<String> resourcePaths = new LinkedList<String>();
 	private final List<Resource> resources = new LinkedList<Resource>();
 	private final MediaType mediaType;

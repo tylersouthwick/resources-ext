@@ -5,6 +5,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.util.FileCopyUtils;
 
+import javax.annotation.PostConstruct;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -40,6 +41,7 @@ abstract class ResourceHandler {
 		}
 	}
 
+	@PostConstruct
 	public void generateResource() {
 		resource = buildResource();
 	}

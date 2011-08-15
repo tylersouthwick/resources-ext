@@ -1,0 +1,120 @@
+<project>
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>net.northfuse</groupId>
+	<artifactId>resources-ext</artifactId>
+	<packaging>jar</packaging>
+	<name>Resource Handler</name>
+	<version>1.0-SNAPSHOT</version>
+	<description>Resource Handler</description>
+	<url>http://northfuse.net/resource-ext</url>
+
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git@github.com:tylersouthwick/resource-ext.git</connection>
+		<developerConnection>scm:git:git@github.com:tylersouthwick/resource-ext.git</developerConnection>
+		<url>scm:git:git@github.com:tylersouthwick/resource-ext.git</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>northfuse</id>
+			<name>Tyler Southwick</name>
+			<email>tyler@northfuse.net</email>
+		</developer>
+	</developers>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-core</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-web</artifactId>
+				<version>${spring.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${servlet.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>${slf4j.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>analyze-only</goal>
+						</goals>
+						<configuration>
+							<failOnWarning>true</failOnWarning>
+							<verbose>true</verbose>
+							<outputXML>true</outputXML>
+							<ignoreNonCompile>true</ignoreNonCompile>
+						</configuration>
+						<inherited>true</inherited>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<spring.version>3.0.5.RELEASE</spring.version>
+		<servlet.version>2.5</servlet.version>
+		<slf4j.version>1.6.1</slf4j.version>
+	</properties>
+</project>

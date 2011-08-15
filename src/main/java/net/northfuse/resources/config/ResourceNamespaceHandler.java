@@ -10,5 +10,6 @@ public class ResourceNamespaceHandler extends NamespaceHandlerSupport {
 	public void init() {
 		registerBeanDefinitionParser("script", new ScriptDefinitionParser());
 		registerBeanDefinitionParser("style", new StyleDefinitionParser());
+		registerBeanDefinitionParser("handler", new HandlerDefinitionParser());
 	}
 }

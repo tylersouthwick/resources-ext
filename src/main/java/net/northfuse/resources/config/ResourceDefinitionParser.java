@@ -7,12 +7,11 @@ import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.BeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
-import org.springframework.web.bind.annotation.Mapping;
+import org.springframework.web.servlet.HandlerAdapter;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import javax.annotation.Resource;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author tylers2
  */
 abstract class ResourceDefinitionParser<T extends ResourceHandler> implements BeanDefinitionParser {
-	private AtomicBoolean registeredHandler = new AtomicBoolean();
+	private static final AtomicBoolean registeredHandler = new AtomicBoolean();
 
 	public final BeanDefinition parse(Element element, ParserContext parserContext) {
 		RootBeanDefinition definition = new RootBeanDefinition(getImplementation());
@@ -66,15 +65,25 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 		return definition;
 	}
 
-	private void registerHandlers(ParserContext parserContext) {
+	static void registerHandlers(ParserContext parserContext) {
+		registerHandlers(parserContext, null);
+	}
+
+	public static void registerHandlers(ParserContext parserContext, Integer order) {
+		String name = ResourceHandlerMapping.class.getName();
 		synchronized (registeredHandler) {
 			if (!registeredHandler.get()) {
 				registeredHandler.set(true);
 
 				parserContext.getRegistry().registerBeanDefinition(ResourceHandlerAdapter.class.getName(), new RootBeanDefinition(ResourceHandlerAdapter.class));
-				parserContext.getRegistry().registerBeanDefinition(ResourceHandlerMapping.class.getName(), new RootBeanDefinition(ResourceHandlerMapping.class));
+				RootBeanDefinition definition = new RootBeanDefinition(ResourceHandlerMapping.class);
+				if (order != null) {
+					definition.getPropertyValues().add("order", order);
+				}
+				parserContext.getRegistry().registerBeanDefinition(name, definition);
 			}
 		}
+
 	}
 
 	protected abstract Class<T> getImplementation();

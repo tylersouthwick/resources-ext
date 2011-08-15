@@ -28,6 +28,12 @@
 		<url>scm:git:git@github.com:tylersouthwick/resource-ext.git</url>
 	</scm>
 
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>http://github.com/tylersouthwick/resources-ext/issues</url>
+	</issueManagement>
+
 	<developers>
 		<developer>
 			<id>northfuse</id>

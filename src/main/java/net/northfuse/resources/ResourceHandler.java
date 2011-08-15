@@ -1,5 +1,6 @@
 package net.northfuse.resources;
 
+import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -12,6 +13,8 @@ import org.springframework.util.FileCopyUtils;
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
@@ -29,7 +32,7 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	private String mapping;
 	private ApplicationContext applicationContext;
 
-	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
+	protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 	ResourceHandler(MediaType mediaType) {
 		this.mediaType = mediaType;
@@ -61,7 +64,7 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 			synchronized (this.resources) {
 				this.resources.clear();
 				resolveResources();
-				return buildResource();
+				return buildResource(true);
 			}
 		} else {
 			return resource;
@@ -86,11 +89,11 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	}
 
 	private void generateResource() {
-		resource = buildResource();
+		resource = buildResource(true);
 	}
 
-	private Resource buildResource() {
-		final byte[] data = aggregate();
+	private ByteArrayResource buildResource(boolean minify) {
+		final byte[] data = aggregate(minify);
 		final long lastModified = new Date().getTime();
 		return new ByteArrayResource(data) {
 			@Override
@@ -105,13 +108,17 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 		};
 	}
 
-	public byte[] aggregate() {
+	private byte[] aggregate(boolean minify) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		LOG.debug("Building " + mapping);
 		for (Resource resource : resources) {
 			try {
 				LOG.debug("Adding " + resource.getDescription());
-				FileCopyUtils.copy(resource.getInputStream(), baos);
+				InputStream is = resource.getInputStream();
+				if (minify) {
+					is = wrapWithMinify(is);
+				}
+				FileCopyUtils.copy(is, baos);
 			} catch (IOException e) {
 				throw new IllegalStateException("Unable to copy resource file [" + resource.getDescription() + "]", e);
 			}
@@ -119,6 +126,8 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 		LOG.debug("Built " + mapping);
 		return baos.toByteArray();
 	}
+
+	protected abstract InputStream wrapWithMinify(InputStream is) throws IOException;
 
 	public MediaType getMediaType() {
 		return mediaType;

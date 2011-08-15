@@ -61,7 +61,11 @@ abstract class ResourceHandler implements ApplicationContextAware {
 
 	public Resource aggregatedResource() {
 		if (debug) {
-			return buildResource();
+			synchronized (this.resources) {
+				this.resources.clear();
+				resolveResources();
+				return buildResource();
+			}
 		} else {
 			return resource;
 		}

@@ -38,19 +38,7 @@ public class ResourceHandlerAdapter extends WebContentGenerator implements Handl
 		Resource resource = handler.aggregatedResource();
 
 		// check the resource's media type
-		MediaType mediaType = getMediaType(resource);
-		if (mediaType != null) {
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("Determined media type [" + mediaType + "] for " + resource);
-			}
-		}
-		else {
-			if (LOG.isDebugEnabled()) {
-				LOG.debug("No media type found for " + resource + " - returning 404");
-			}
-			response.sendError(HttpServletResponse.SC_NOT_FOUND);
-			return null;
-		}
+		MediaType mediaType = handler.getMediaType();
 
 		// header phase
 		setHeaders(response, resource, mediaType);
@@ -66,19 +54,6 @@ public class ResourceHandlerAdapter extends WebContentGenerator implements Handl
 	@Override
 	public long getLastModified(HttpServletRequest request, Object handler) {
 		return 0;
-	}
-
-	/**
-	 * Determine an appropriate media type for the given resource.
-	 * @param resource the resource to check
-	 * @return the corresponding media type, or <code>null</code> if none found
-	 */
-	protected MediaType getMediaType(Resource resource) {
-		/*
-		String mimeType = getServletContext().getMimeType(resource.getFilename());
-		return (StringUtils.hasText(mimeType) ? MediaType.parseMediaType(mimeType) : null);
-		*/
-		return MediaType.APPLICATION_JSON;
 	}
 
 	/**

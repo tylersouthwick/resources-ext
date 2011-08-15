@@ -1,5 +1,7 @@
 package net.northfuse.resources;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
@@ -20,6 +22,9 @@ abstract class ResourceHandler {
 	private final MediaType mediaType;
 	private boolean debug;
 	private Resource resource;
+	private String name;
+
+	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
 	ResourceHandler(MediaType mediaType) {
 		this.mediaType = mediaType;
@@ -27,6 +32,14 @@ abstract class ResourceHandler {
 
 	public void setDebug(boolean debug) {
 		this.debug = debug;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public void setResources(List<Resource> resources) {
@@ -64,13 +77,16 @@ abstract class ResourceHandler {
 
 	public byte[] aggregate() {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		LOG.debug("Building " + name);
 		for (Resource resource : resources) {
 			try {
+				LOG.debug("Adding " + resource.getDescription());
 				FileCopyUtils.copy(resource.getInputStream(), baos);
 			} catch (IOException e) {
 				throw new IllegalStateException("Unable to copy resource file [" + resource.getDescription() + "]", e);
 			}
 		}
+		LOG.debug("Built " + name);
 		return baos.toByteArray();
 	}
 

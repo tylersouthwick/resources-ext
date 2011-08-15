@@ -2,12 +2,11 @@ package net.northfuse.resources.config;
 
 import net.northfuse.resources.ResourceHandler;
 import net.northfuse.resources.ResourceHandlerAdapter;
-import net.northfuse.resources.ResourceHandlerMapping;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.beans.factory.xml.BeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
-import org.springframework.web.servlet.HandlerAdapter;
+import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -21,14 +20,14 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author tylers2
  */
 abstract class ResourceDefinitionParser<T extends ResourceHandler> implements BeanDefinitionParser {
-	private static final AtomicBoolean registeredHandler = new AtomicBoolean();
+	private static final AtomicBoolean registeredAdapter = new AtomicBoolean();
 
 	public final BeanDefinition parse(Element element, ParserContext parserContext) {
 		RootBeanDefinition definition = new RootBeanDefinition(getImplementation());
 
 		definition.getPropertyValues().add("debug", element.getAttribute("debug"));
 		String mapping = element.getAttribute("mapping");
-		definition.getPropertyValues().add("name", mapping);
+		definition.getPropertyValues().add("mapping", mapping);
 
 		//find resource location
 		List<String> resources = new LinkedList<String>();
@@ -60,27 +59,23 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 
 		parserContext.getRegistry().registerBeanDefinition(getImplementation().getName() + "::" + mapping, definition);
 
-		registerHandlers(parserContext);
+		registerAdapter(parserContext);
+
+		String sOrder = element.getAttribute("order");
+		if (StringUtils.hasText(sOrder)) {
+			int order = Integer.parseInt(sOrder);
+			definition.getPropertyValues().add("order", order);
+		}
 
 		return definition;
 	}
 
-	static void registerHandlers(ParserContext parserContext) {
-		registerHandlers(parserContext, null);
-	}
-
-	public static void registerHandlers(ParserContext parserContext, Integer order) {
-		String name = ResourceHandlerMapping.class.getName();
-		synchronized (registeredHandler) {
-			if (!registeredHandler.get()) {
-				registeredHandler.set(true);
+	static void registerAdapter(ParserContext parserContext) {
+		synchronized (registeredAdapter) {
+			if (!registeredAdapter.get()) {
+				registeredAdapter.set(true);
 
 				parserContext.getRegistry().registerBeanDefinition(ResourceHandlerAdapter.class.getName(), new RootBeanDefinition(ResourceHandlerAdapter.class));
-				RootBeanDefinition definition = new RootBeanDefinition(ResourceHandlerMapping.class);
-				if (order != null) {
-					definition.getPropertyValues().add("order", order);
-				}
-				parserContext.getRegistry().registerBeanDefinition(name, definition);
 			}
 		}
 

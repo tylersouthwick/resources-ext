@@ -4,13 +4,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
-import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.util.FileCopyUtils;
-import sun.security.util.Resources_es;
 
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayOutputStream;
@@ -29,7 +26,7 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	private final MediaType mediaType;
 	private boolean debug;
 	private Resource resource;
-	private String name;
+	private String mapping;
 	private ApplicationContext applicationContext;
 
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
@@ -42,12 +39,12 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 		this.debug = debug;
 	}
 
-	public String getName() {
-		return name;
+	public String getMapping() {
+		return mapping;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setMapping(String mapping) {
+		this.mapping = mapping;
 	}
 
 	public void setResources(List<String> resources) {
@@ -110,7 +107,7 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 
 	public byte[] aggregate() {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		LOG.debug("Building " + name);
+		LOG.debug("Building " + mapping);
 		for (Resource resource : resources) {
 			try {
 				LOG.debug("Adding " + resource.getDescription());
@@ -119,7 +116,7 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 				throw new IllegalStateException("Unable to copy resource file [" + resource.getDescription() + "]", e);
 			}
 		}
-		LOG.debug("Built " + name);
+		LOG.debug("Built " + mapping);
 		return baos.toByteArray();
 	}
 

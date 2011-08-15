@@ -5,16 +5,6 @@
             targetNamespace="http://northfuse.net/schema/resources-ext"
             elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-	<xsd:element name="handler">
-		<xsd:annotation>
-			<xsd:documentation source="net.northfuse.resources.ResourceHandlerMapping"><![CDATA[
-			]]></xsd:documentation>
-		</xsd:annotation>
-		<xsd:complexType>
-			<xsd:attribute name="order" type="xsd:int" />
-		</xsd:complexType>
-	</xsd:element>
-
 	<xsd:element name="script" type="tns:ResourceHandlerType">
 		<xsd:annotation>
 			<xsd:documentation source="java:net.northfuse.resources.ScriptResourceHandler"><![CDATA[
@@ -35,6 +25,7 @@
 		<xsd:sequence>
 			<xsd:element name="resource" type="tns:ResourceType" maxOccurs="unbounded" minOccurs="1"/>
 		</xsd:sequence>
+		<xsd:attribute name="order" type="xsd:int" />
 		<xsd:attribute name="mapping" type="xsd:string"/>
 		<xsd:attribute name="debug" type="xsd:boolean">
 			<xsd:annotation>

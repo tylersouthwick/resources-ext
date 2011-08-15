@@ -2,14 +2,20 @@ package net.northfuse.resources;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
+import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.MediaType;
 import org.springframework.util.FileCopyUtils;
+import sun.security.util.Resources_es;
 
 import javax.annotation.PostConstruct;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,12 +23,14 @@ import java.util.List;
 /**
  * @author tylers2
  */
-abstract class ResourceHandler {
+abstract class ResourceHandler implements ApplicationContextAware {
+	private final List<String> resourcePaths = new LinkedList<String>();
 	private final List<Resource> resources = new LinkedList<Resource>();
 	private final MediaType mediaType;
 	private boolean debug;
 	private Resource resource;
 	private String name;
+	private ApplicationContext applicationContext;
 
 	private final Logger LOG = LoggerFactory.getLogger(this.getClass());
 
@@ -42,8 +50,13 @@ abstract class ResourceHandler {
 		this.name = name;
 	}
 
-	public void setResources(List<Resource> resources) {
-		this.resources.addAll(resources);
+	public void setResources(List<String> resources) {
+		this.resourcePaths.addAll(resources);
+	}
+
+	@Override
+	public void setApplicationContext(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
 	}
 
 	public Resource aggregatedResource() {
@@ -55,7 +68,23 @@ abstract class ResourceHandler {
 	}
 
 	@PostConstruct
-	public void generateResource() {
+	public void init() {
+		resolveResources();
+		generateResource();
+	}
+
+	private void resolveResources() {
+		for (String resourcePath : resourcePaths) {
+			try {
+				Resource[] resources = applicationContext.getResources(resourcePath);
+				this.resources.addAll(Arrays.asList(resources));
+			} catch (IOException e) {
+				throw new IllegalStateException("Unable to get resources for resourcePath [" + resourcePath + "]", e);
+			}
+		}
+	}
+
+	private void generateResource() {
 		resource = buildResource();
 	}
 

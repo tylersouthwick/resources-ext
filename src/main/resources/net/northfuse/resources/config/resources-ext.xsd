@@ -5,26 +5,35 @@
             targetNamespace="http://northfuse.net/schema/resources-ext"
             elementFormDefault="qualified" attributeFormDefault="unqualified">
 
-	<xsd:element name="script">
+	<xsd:element name="script" type="tns:ResourceHandlerType">
 		<xsd:annotation>
 			<xsd:documentation source="java:net.northfuse.resources.ScriptResourceHandler"><![CDATA[
 					Adds a Script Resource Handler
 			]]></xsd:documentation>
 		</xsd:annotation>
-		<xsd:complexType>
-			<xsd:sequence>
-				<xsd:element name="resource" type="tns:ResourceType" maxOccurs="unbounded" minOccurs="1" />
-			</xsd:sequence>
-			<xsd:attribute name="mapping" type="xsd:string"/>
-			<xsd:attribute name="debug" type="xsd:boolean">
-				<xsd:annotation>
-					<xsd:documentation><![CDATA[
+	</xsd:element>
+
+	<xsd:element name="style" type="tns:ResourceHandlerType">
+		<xsd:annotation>
+			<xsd:documentation source="java:net.northfuse.resources.StyleResourceHandler"><![CDATA[
+					Adds a Style Resource Handler
+			]]></xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+
+	<xsd:complexType name="ResourceHandlerType">
+		<xsd:sequence>
+			<xsd:element name="resource" type="tns:ResourceType" maxOccurs="unbounded" minOccurs="1"/>
+		</xsd:sequence>
+		<xsd:attribute name="mapping" type="xsd:string"/>
+		<xsd:attribute name="debug" type="xsd:boolean">
+			<xsd:annotation>
+				<xsd:documentation><![CDATA[
 							Enables debug mode
 					]]></xsd:documentation>
-				</xsd:annotation>
-			</xsd:attribute>
-		</xsd:complexType>
-	</xsd:element>
+			</xsd:annotation>
+		</xsd:attribute>
+	</xsd:complexType>
 
 	<xsd:complexType name="ResourceType">
 		<xsd:attribute name="location" use="required" type="xsd:string">

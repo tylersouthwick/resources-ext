@@ -1,6 +1,5 @@
 package net.northfuse.resources;
 
-import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -115,7 +114,13 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 				if (minify) {
 					is = wrapWithMinify(is);
 				} else if (debug) {
-					is = wrapWithLineNumbers(is, resource.getDescription());
+					String description = resource.getDescription();
+					String text = "/WEB-INF/classes";
+					int index = description.indexOf(text);
+					if (index > 0) {
+						description = description.substring(index + text.length());
+					}
+					is = new LineWrapperInputStream(is, description);
 				}
 				FileCopyUtils.copy(is, baos);
 			} catch (IOException e) {
@@ -124,19 +129,6 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 		}
 		LOG.debug("Built " + mapping);
 		return baos.toByteArray();
-	}
-
-	private InputStream wrapWithLineNumbers(InputStream is, String description) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		String line;
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		PrintWriter writer = new PrintWriter(baos);
-		int lineNumber = 0;
-		while ((line = reader.readLine()) != null) {
-			writer.println("/* " + description + ":" + (++lineNumber) + " */" + line);
-		}
-		writer.close();
-		return new ByteArrayInputStream(baos.toByteArray());
 	}
 
 	protected abstract InputStream wrapWithMinify(InputStream is) throws IOException;

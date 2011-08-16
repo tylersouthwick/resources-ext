@@ -11,10 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.util.FileCopyUtils;
 
 import javax.annotation.PostConstruct;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
@@ -117,6 +114,8 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 				InputStream is = resource.getInputStream();
 				if (minify) {
 					is = wrapWithMinify(is);
+				} else if (debug) {
+					is = wrapWithLineNumbers(is, resource.getDescription());
 				}
 				FileCopyUtils.copy(is, baos);
 			} catch (IOException e) {
@@ -125,6 +124,19 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 		}
 		LOG.debug("Built " + mapping);
 		return baos.toByteArray();
+	}
+
+	private InputStream wrapWithLineNumbers(InputStream is, String description) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		String line;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		PrintWriter writer = new PrintWriter(baos);
+		int lineNumber = 0;
+		while ((line = reader.readLine()) != null) {
+			writer.println("/* " + description + ":" + (++lineNumber) + " */" + line);
+		}
+		writer.close();
+		return new ByteArrayInputStream(baos.toByteArray());
 	}
 
 	protected abstract InputStream wrapWithMinify(InputStream is) throws IOException;

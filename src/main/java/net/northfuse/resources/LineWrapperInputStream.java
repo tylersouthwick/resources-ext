@@ -17,9 +17,9 @@ public class LineWrapperInputStream extends InputStream {
 		boolean inComment = false;
 		while ((line = reader.readLine()) != null) {
 			if (inComment) {
-				writer.println("  d " + description + ":" + (++lineNumber) + "   " + line);
+				writer.println("   " + description + ":" + (++lineNumber) + "   " + line);
 			} else {
-				writer.println("/*d " + description + ":" + (++lineNumber) + " */" + line);
+				writer.println("/* " + description + ":" + (++lineNumber) + " */" + line);
 			}
 			if (!inComment) {
 				int commentIndex = line.lastIndexOf("/*");

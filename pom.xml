@@ -34,6 +34,14 @@
 		<url>http://github.com/tylersouthwick/resources-ext/issues</url>
 	</issueManagement>
 
+	<distributionManagement>
+		<site>
+			<id>site.website</id>
+			<name>Northfuse Site</name>
+			<url>scp://tyler@northfuse.net/data/sites/resources-ext</url>
+		</site>
+	</distributionManagement>
+
 	<developers>
 		<developer>
 			<id>northfuse</id>

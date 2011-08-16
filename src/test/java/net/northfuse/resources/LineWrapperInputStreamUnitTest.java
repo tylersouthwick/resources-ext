@@ -34,6 +34,34 @@ public class LineWrapperInputStreamUnitTest {
 		assertEqual(input, expected, description);
 	}
 
+	@Test
+	public void commentCharacterInString() throws IOException {
+		String description = "HelloWorld";
+		List<String> input = new LinkedList<String>();
+		input.add("e \"/*\"");
+		input.add("f");
+
+		List<String> expected = new LinkedList<String>();
+		expected.add("/* " + description + ":1 */" + "e \"/*\"");
+		expected.add("/* " + description + ":2 */" + "f");
+
+		assertEqual(input, expected, description);
+	}
+
+	@Test
+	public void noCommentCharacterInString() throws IOException {
+		String description = "HelloWorld";
+		List<String> input = new LinkedList<String>();
+		input.add("e \"\"/*");
+		input.add("f");
+
+		List<String> expected = new LinkedList<String>();
+		expected.add("/* " + description + ":1 */" + "e \"\"/*");
+		expected.add("   " + description + ":2   " + "f");
+
+		assertEqual(input, expected, description);
+	}
+
 	private void assertEqual(List<String> input, List<String> expected, String description) throws IOException {
 		String realInput = buildString(input);
 		String realExpected = buildString(expected);

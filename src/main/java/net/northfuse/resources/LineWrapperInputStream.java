@@ -17,15 +17,16 @@ public class LineWrapperInputStream extends InputStream {
 		boolean inComment = false;
 		while ((line = reader.readLine()) != null) {
 			if (inComment) {
-				writer.println("   " + description + ":" + (++lineNumber) + "   " + line);
+				writer.println("  d " + description + ":" + (++lineNumber) + "   " + line);
 			} else {
-				writer.println("/* " + description + ":" + (++lineNumber) + " */" + line);
+				writer.println("/*d " + description + ":" + (++lineNumber) + " */" + line);
 			}
 			if (!inComment) {
 				int commentIndex = line.lastIndexOf("/*");
 				if (commentIndex > -1) {
 					if (commentIndex > 0) {
-						if (line.charAt(commentIndex) == '*') {
+						//is the comment start inside of a string?
+						if (countOccurences(line.substring(0, commentIndex), "\"") % 2 == 1) {
 							continue;
 						}
 					}
@@ -46,6 +47,25 @@ public class LineWrapperInputStream extends InputStream {
 		//get rid of the last new line
 		byte[] data = baos.toByteArray();
 		this.is = new ByteArrayInputStream(data, 0, data.length - 1);
+	}
+
+	private int countOccurences(String s, String pattern) {
+		int count = 0;
+		for (char c : s.toCharArray()) {
+			if (c == pattern.charAt(0)) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	private int doCountOccurences(String s, String pattern, int count) {
+		int index = s.indexOf(pattern);
+		if (index == -1) {
+			return count;
+		} else {
+			return doCountOccurences(s.substring(index + 1), pattern, count + 1);
+		}
 	}
 
 	@Override

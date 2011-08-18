@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 abstract class ResourceDefinitionParser<T extends ResourceHandler> implements BeanDefinitionParser {
 	private final AtomicBoolean registeredAdapter = new AtomicBoolean();
+	private final Object lock = new Object();
 
 	public final BeanDefinition parse(Element element, ParserContext parserContext) {
 		doParse(parserContext, element, parserContext.extractSource(element));
@@ -110,7 +111,7 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	}
 
 	private void registerAdapterIfNeeded(ParserContext parserContext) {
-		synchronized (registeredAdapter) {
+		synchronized (lock) {
 			if (!registeredAdapter.get()) {
 				registeredAdapter.set(true);
 

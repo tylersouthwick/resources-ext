@@ -26,7 +26,7 @@ public class LineWrapperInputStream extends InputStream {
 				if (commentIndex > -1) {
 					if (commentIndex > 0) {
 						//is the comment start inside of a string?
-						if (countOccurences(line.substring(0, commentIndex), "\"") % 2 == 1) {
+						if (inString(line.substring(0, commentIndex))) {
 							continue;
 						}
 					}
@@ -47,6 +47,11 @@ public class LineWrapperInputStream extends InputStream {
 		//get rid of the last new line
 		byte[] data = baos.toByteArray();
 		this.is = new ByteArrayInputStream(data, 0, data.length - 1);
+	}
+
+	private boolean inString(String line) {
+		//there should be an odd number of double quotes to be in a string
+		return countOccurences(line, "\"") % 2 != 0;
 	}
 
 	private int countOccurences(String s, String pattern) {

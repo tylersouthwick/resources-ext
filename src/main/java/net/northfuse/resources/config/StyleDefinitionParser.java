@@ -5,7 +5,7 @@ import net.northfuse.resources.StyleResourceHandler;
 /**
  * @author tylers2
  */
-public class StyleDefinitionParser extends ResourceDefinitionParser<StyleResourceHandler> {
+public final class StyleDefinitionParser extends ResourceDefinitionParser<StyleResourceHandler> {
 
 	@Override
 	protected Class<StyleResourceHandler> getImplementation() {

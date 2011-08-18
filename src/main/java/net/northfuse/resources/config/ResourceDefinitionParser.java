@@ -19,17 +19,31 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
+ * Parses a resource definition for a given resource handler.
+ *
+ * @param <T> The type of ResourceHandler
  * @author tylers2
  */
 abstract class ResourceDefinitionParser<T extends ResourceHandler> implements BeanDefinitionParser {
 	private final AtomicBoolean registeredAdapter = new AtomicBoolean();
 	private final Object lock = new Object();
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
 	public final BeanDefinition parse(Element element, ParserContext parserContext) {
 		doParse(parserContext, element, parserContext.extractSource(element));
 		return null;
 	}
 
+	/**
+	 * Parses the config.
+	 *
+	 * @param parserContext The ParserContext
+	 * @param element The element
+	 * @param source the source
+	 */
 	private void doParse(ParserContext parserContext, Element element, Object source) {
 		Data data = registerResourceHandler(parserContext, element, source);
 
@@ -56,6 +70,15 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 		parserContext.registerBeanComponent(new BeanComponentDefinition(handlerMappingDefinition, handlerMappingBeanName));
 	}
 
+	/**
+	 * Registers the resource handler.
+	 *
+	 * @param parserContext The ParserContext
+	 * @param element The element
+	 * @param source the source
+	 *
+	 * @return The resource handler config information
+	 */
 	private Data registerResourceHandler(ParserContext parserContext, Element element, Object source) {
 		RootBeanDefinition handlerDefinition = new RootBeanDefinition(getImplementation());
 
@@ -82,6 +105,13 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 		return data;
 	}
 
+	/**
+	 * Finds the locations from the resource child nodes.
+	 *
+	 * @param element The Element that contains the resource nodes
+	 *
+	 * @return A list of resources
+	 */
 	private List<String> findLocations(Element element) {
 		List<String> resources = new LinkedList<String>();
 
@@ -110,20 +140,34 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 		return resources;
 	}
 
+	/**
+	 * Registers the adapter if it hasn't already been registered.
+	 *
+	 * @param parserContext The parserContext
+	 */
 	private void registerAdapterIfNeeded(ParserContext parserContext) {
 		synchronized (lock) {
 			if (!registeredAdapter.get()) {
 				registeredAdapter.set(true);
 
-				parserContext.getRegistry().registerBeanDefinition(ResourceHandlerAdapter.class.getName(), new RootBeanDefinition(ResourceHandlerAdapter.class));
+				RootBeanDefinition adapterDefinition = new RootBeanDefinition(ResourceHandlerAdapter.class);
+				parserContext.getRegistry().registerBeanDefinition(ResourceHandlerAdapter.class.getName(), adapterDefinition);
 			}
 		}
 
 	}
 
+	/**
+	 * Gets the implementation class for this resource handler.
+	 *
+	 * @return The implementation class
+	 */
 	protected abstract Class<T> getImplementation();
 
-	private class Data {
+	/**
+	 * Simple data holder.
+	 */
+	private static class Data {
 		private String handlerBeanName;
 		private String resourceMapping;
 	}

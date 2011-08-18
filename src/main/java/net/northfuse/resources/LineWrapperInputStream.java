@@ -3,13 +3,23 @@ package net.northfuse.resources;
 import java.io.*;
 
 /**
+ * Appends a file and line number to the beginning of all lines.
+ *
  * @author tylers2
  */
-public class LineWrapperInputStream extends InputStream {
+public final class LineWrapperInputStream extends InputStream {
 	private final InputStream is;
 
-	public LineWrapperInputStream(InputStream is, String description) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+	/**
+	 * Creates a new LineWrapperInputStream.
+	 *
+	 * @param in The input stream to wrap
+	 * @param description The description of the input stream
+	 *
+	 * @throws IOException if the underlying InputStream has an IOException
+	 */
+	public LineWrapperInputStream(InputStream in, String description) throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		String line;
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PrintWriter writer = new PrintWriter(baos);
@@ -49,11 +59,25 @@ public class LineWrapperInputStream extends InputStream {
 		this.is = new ByteArrayInputStream(data, 0, data.length - 1);
 	}
 
+	/**
+	 * Checks to see if the line ends in a string.
+	 * @param line The line to check
+	 *
+	 * @return Whether or not in string
+	 */
 	private boolean inString(String line) {
 		//there should be an odd number of double quotes to be in a string
 		return countOccurences(line, '"') % 2 != 0;
 	}
 
+	/**
+	 * Count the occurences of a pattern in a string.
+	 *
+	 * @param s The string to check
+	 * @param pattern The pattern
+	 *
+	 * @return The count of occurrences
+	 */
 	private int countOccurences(String s, char pattern) {
 		int count = 0;
 		for (char c : s.toCharArray()) {
@@ -64,46 +88,75 @@ public class LineWrapperInputStream extends InputStream {
 		return count;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int read() throws IOException {
 		return is.read();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int read(byte[] b) throws IOException {
 		return is.read(b);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int read(byte[] b, int off, int len) throws IOException {
 		return is.read(b, off, len);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public long skip(long n) throws IOException {
 		return is.skip(n);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public int available() throws IOException {
 		return is.available();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void close() throws IOException {
 		is.close();
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void mark(int readlimit) {
 		is.mark(readlimit);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void reset() throws IOException {
 		is.reset();
 	}
 
+	/**
+	 * @{inheritDoc}
+	 *
+	 * @return @{inheritDoc}
+	 */
 	@Override
 	public boolean markSupported() {
 		return is.markSupported();

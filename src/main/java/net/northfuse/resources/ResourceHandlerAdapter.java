@@ -17,19 +17,28 @@ import java.io.IOException;
 /**
  * @author tylers2
  */
-public class ResourceHandlerAdapter extends WebContentGenerator implements HandlerAdapter {
+public final class ResourceHandlerAdapter extends WebContentGenerator implements HandlerAdapter {
 
-	private final static Logger LOG = LoggerFactory.getLogger(ResourceHandlerAdapter.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ResourceHandlerAdapter.class);
 
+	/**
+	 * Creates a ResourceHandlerAdapter.
+	 */
 	public ResourceHandlerAdapter() {
 		super(METHOD_GET);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public boolean supports(Object handler) {
 		return ResourceHandler.class.isAssignableFrom(handler.getClass());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
 		checkAndPrepare(request, response, true);
@@ -50,6 +59,9 @@ public class ResourceHandlerAdapter extends WebContentGenerator implements Handl
 		return null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public long getLastModified(HttpServletRequest request, Object handler) {
 		return 0;

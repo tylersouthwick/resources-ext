@@ -1,5 +1,7 @@
 package net.northfuse.resources;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
@@ -10,12 +12,20 @@ import java.io.*;
 /**
  * @author tylers2
  */
-public class ScriptResourceHandler extends ResourceHandler {
+public final class ScriptResourceHandler extends ResourceHandler {
 
+	private static final Logger LOG = LoggerFactory.getLogger(ScriptResourceHandler.class);
+
+	/**
+	 * Creates a ScriptResourceHandler.
+	 */
 	public ScriptResourceHandler() {
 		super(new MediaType("text", "javascript"));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected InputStream wrapWithMinify(InputStream is) throws IOException {
 		int linebreak = 0;

@@ -5,7 +5,7 @@ import net.northfuse.resources.ScriptResourceHandler;
 /**
  * @author tylers2
  */
-public class ScriptDefinitionParser extends ResourceDefinitionParser<ScriptResourceHandler> {
+public final class ScriptDefinitionParser extends ResourceDefinitionParser<ScriptResourceHandler> {
 
 	@Override
 	protected Class<ScriptResourceHandler> getImplementation() {

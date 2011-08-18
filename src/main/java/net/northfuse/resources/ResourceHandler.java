@@ -28,34 +28,71 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	private String mapping;
 	private ApplicationContext applicationContext;
 
-	protected final Logger LOG = LoggerFactory.getLogger(this.getClass());
+	private static final Logger LOG = LoggerFactory.getLogger(ResourceHandler.class);
 
+	/**
+	 * Creates a resource handler.
+	 *
+	 * @param mediaType The MediaType
+	 */
 	ResourceHandler(MediaType mediaType) {
 		this.mediaType = mediaType;
 	}
 
-	public void setDebug(boolean debug) {
+	/**
+	 * Sets debug mode.
+	 *
+	 * @param debug Whether or not to enable debug mode
+	 */
+	public final void setDebug(boolean debug) {
 		this.debug = debug;
 	}
 
-	public String getMapping() {
+	/**
+	 * Gets the mapping of this resource.
+	 *
+	 * @return The mapping
+	 */
+	public final String getMapping() {
 		return mapping;
 	}
 
-	public void setMapping(String mapping) {
+	/**
+	 * Sets the mapping.
+	 *
+	 * @param mapping The mapping
+	 */
+	public final void setMapping(String mapping) {
 		this.mapping = mapping;
 	}
 
-	public void setResources(List<String> resources) {
+	/**
+	 * Sets the resources.
+	 *
+	 * @param resources The new resources to add
+	 */
+	public final void setResources(List<String> resources) {
 		this.resourcePaths.addAll(resources);
 	}
 
+	/**
+	 * Sets the application context.
+	 *
+	 * @param applicationContext The application context
+	 */
 	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) {
+	public final void setApplicationContext(ApplicationContext applicationContext) {
 		this.applicationContext = applicationContext;
 	}
 
-	public Resource aggregatedResource() {
+	/**
+	 * Aggregates the resource, creating a new resource.
+	 * If debug mode is enabled, re-aggregates them based off of the timestamps of the files.
+	 * If debug mode is not enabled, return the cached resource
+	 *
+	 * @return a non-null resource
+	 */
+	public final Resource aggregatedResource() {
 		if (debug) {
 			synchronized (this.resources) {
 				this.resources.clear();
@@ -67,12 +104,18 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 		}
 	}
 
+	/**
+	 * Initialize (cache) resource.
+	 */
 	@PostConstruct
-	public void init() {
+	public final void init() {
 		resolveResources();
 		generateResource();
 	}
 
+	/**
+	 * resolves resources.
+	 */
 	private void resolveResources() {
 		for (String resourcePath : resourcePaths) {
 			try {
@@ -84,10 +127,20 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 		}
 	}
 
+	/**
+	 * Generates resource and caches it.
+	 */
 	private void generateResource() {
 		resource = buildResource(true);
 	}
 
+	/**
+	 * Builds the resource from all the given resources.
+	 *
+	 * @param minify Whether or not to minify
+	 *
+	 * @return The constructed resource
+	 */
 	private ByteArrayResource buildResource(boolean minify) {
 		final byte[] data = aggregate(minify);
 		final long lastModified = new Date().getTime();
@@ -104,6 +157,13 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 		};
 	}
 
+	/**
+	 * Aggregates the resources.
+	 *
+	 * @param minify Whether or not to minify.
+	 *
+	 * @return A non-null byte array
+	 */
 	private byte[] aggregate(boolean minify) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		LOG.debug("Building " + mapping);
@@ -131,9 +191,21 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 		return baos.toByteArray();
 	}
 
+	/**
+	 * Wraps the input stream with an input stream that minifies it.
+	 *
+	 * @param is The input stream to wrap
+	 * @return A wrapped input stream
+	 * @throws IOException If an io exception occurs.
+	 */
 	protected abstract InputStream wrapWithMinify(InputStream is) throws IOException;
 
-	public MediaType getMediaType() {
+	/**
+	 * Gets the media type.
+	 *
+	 * @return A non-null media-type
+	 */
+	public final MediaType getMediaType() {
 		return mediaType;
 	}
 }

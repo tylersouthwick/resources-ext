@@ -157,6 +157,20 @@
 	</dependencies>
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>findbugs-maven-plugin</artifactId>
+					<version>${findbugs.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-changelog-plugin</artifactId>
+					<version>${changelog.version}</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -208,6 +222,14 @@
 				<configuration>
 					<reportPlugins>
 						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>findbugs-maven-plugin</artifactId>
+						</plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-changelog-plugin</artifactId>
+						</plugin>
+						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-project-info-reports-plugin</artifactId>
 							<version>${projectInfoReportsPluginVersion}</version>
@@ -236,5 +258,7 @@
 		<mavenSitePlugin.version>3.0</mavenSitePlugin.version>
 		<javadocPluginVersion>2.8</javadocPluginVersion>
 		<projectInfoReportsPluginVersion>2.4</projectInfoReportsPluginVersion>
+		<findbugs.version>2.3.2</findbugs.version>
+		<changelog.version>2.2</changelog.version>
 	</properties>
 </project>

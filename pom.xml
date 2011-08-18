@@ -164,11 +164,6 @@
 					<artifactId>findbugs-maven-plugin</artifactId>
 					<version>${findbugs.version}</version>
 				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-changelog-plugin</artifactId>
-					<version>${changelog.version}</version>
-				</plugin>
 			</plugins>
 		</pluginManagement>
 		<plugins>
@@ -228,6 +223,11 @@
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-changelog-plugin</artifactId>
+							<version>${changelog.version}</version>
+							<configuration>
+								<displayFileDetailUrl>${project.scm.url}/blob/master/%FILE%</displayFileDetailUrl>
+								<displayFileRevDetailUrl>${project.scm.url}/blob/%REV%/%FILE%</displayFileRevDetailUrl>
+							</configuration>
 						</plugin>
 						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>

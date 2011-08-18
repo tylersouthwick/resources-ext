@@ -51,26 +51,17 @@ public class LineWrapperInputStream extends InputStream {
 
 	private boolean inString(String line) {
 		//there should be an odd number of double quotes to be in a string
-		return countOccurences(line, "\"") % 2 != 0;
+		return countOccurences(line, '"') % 2 != 0;
 	}
 
-	private int countOccurences(String s, String pattern) {
+	private int countOccurences(String s, char pattern) {
 		int count = 0;
 		for (char c : s.toCharArray()) {
-			if (c == pattern.charAt(0)) {
+			if (c == pattern) {
 				count++;
 			}
 		}
 		return count;
-	}
-
-	private int doCountOccurences(String s, String pattern, int count) {
-		int index = s.indexOf(pattern);
-		if (index == -1) {
-			return count;
-		} else {
-			return doCountOccurences(s.substring(index + 1), pattern, count + 1);
-		}
 	}
 
 	@Override

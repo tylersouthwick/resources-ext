@@ -160,6 +160,11 @@
 		<pluginManagement>
 			<plugins>
 				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>cobertura-maven-plugin</artifactId>
+					<version>${cobertura.version}</version>
+				</plugin>
+				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-checkstyle-plugin</artifactId>
 					<version>2.7</version>
@@ -254,6 +259,11 @@
 				<configuration>
 					<reportPlugins>
 						<plugin>
+							<groupId>org.codehaus.mojo</groupId>
+							<artifactId>cobertura-maven-plugin</artifactId>
+							<version>${cobertura.version}</version>
+						</plugin>
+						<plugin>
 							<groupId>org.apache.maven.plugins</groupId>
 							<artifactId>maven-jxr-plugin</artifactId>
 							<configuration>
@@ -311,5 +321,6 @@
 		<projectInfoReportsPluginVersion>2.4</projectInfoReportsPluginVersion>
 		<findbugs.version>2.3.2</findbugs.version>
 		<changelog.version>2.2</changelog.version>
+		<cobertura.version>2.5.1</cobertura.version>
 	</properties>
 </project>

@@ -1,0 +1,27 @@
+  -----
+  Usage
+  -----
+  Tyler Southwick
+  -----
+  August 18, 2011
+  -----
+
+Usage
+
+  To use, add the resources namespace to your spring context file.
+
++-----+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:resources="http://northfuse.net/schema/resources"
+	xmlns:xsi="http://www.www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://northfuse.net/schema/resources http://northfuse.net/schema/resources-1.0.xsd">
+	<resources:script mapping="/resources/test.js">
+		<resources:resource value="classpath*:/js/*.js" />
+	</resources:script>
+</beans>
++-----+
+
+Resource Patterns
+
+  Resource patterns can be any of the registered Resource patterns in Spring, including the classpath* pattern.

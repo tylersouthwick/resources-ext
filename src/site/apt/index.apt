@@ -1,0 +1,17 @@
+  -----
+  Usage
+  -----
+  Tyler Southwick
+  -----
+  August 18, 2011
+  -----
+
+Resources Extension
+
+  Spring MVC 3.0 introduced the mvc namespace along with the mvc:resource tag.
+  This is really useful to help cache static content.
+  Often it is desireable to have multiple script files, but aggregate them and compress them (using YUI compressor).
+  This doesn't work too well for development.
+
+  This project's goal is to provide an easy way to aggregate and compress these files, while at the same time providing easy development.
+  During development, you can have as many Javascript or CSS files as you want, define their aggregation, and then have them either compressed or not compressed.

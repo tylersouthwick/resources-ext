@@ -64,7 +64,7 @@ public final class ResourceHandlerAdapter extends WebContentGenerator implements
 	 */
 	@Override
 	public long getLastModified(HttpServletRequest request, Object handler) {
-		return 0;
+		return -1;
 	}
 
 	/**

@@ -117,9 +117,22 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	 * resolves resources.
 	 */
 	private void resolveResources() {
+		boolean debug = LOG.isDebugEnabled();
+		if (debug) {
+			LOG.debug("resolving resources");
+		}
 		for (String resourcePath : resourcePaths) {
+			if (debug) {
+				LOG.debug("resolving resource path [" + resourcePath + "]");
+			}
 			try {
 				Resource[] resources = applicationContext.getResources(resourcePath);
+				if (debug) {
+					LOG.debug("Found " + resources.length + " resources:");
+					for (Resource resource : resources) {
+						LOG.debug("\t" + resource.getDescription());
+					}
+				}
 				this.resources.addAll(Arrays.asList(resources));
 			} catch (IOException e) {
 				throw new IllegalStateException("Unable to get resources for resourcePath [" + resourcePath + "]", e);
@@ -144,6 +157,7 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	private ByteArrayResource buildResource(boolean minify) {
 		final byte[] data = aggregate(minify);
 		final long lastModified = new Date().getTime();
+		LOG.debug("Built resource with " + data.length + " bytes @" + lastModified);
 		return new ByteArrayResource(data) {
 			@Override
 			public long lastModified() throws IOException {

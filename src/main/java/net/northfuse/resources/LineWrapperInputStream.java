@@ -40,7 +40,12 @@ public final class LineWrapperInputStream extends InputStream {
 							continue;
 						}
 					}
-					if (!line.substring(commentIndex).contains("*/")) {
+					/**
+					 * We are not in a comment if:
+					 * 1) there is an ending multi-comment block after, or
+					 * 2) a single comment before
+					 */
+					if (!(line.substring(commentIndex).contains("*/") || line.substring(0, commentIndex).contains("//"))) {
 						inComment = true;
 					}
 				}

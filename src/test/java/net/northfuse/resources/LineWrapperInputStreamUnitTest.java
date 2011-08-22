@@ -35,6 +35,20 @@ public class LineWrapperInputStreamUnitTest {
 	}
 
 	@Test
+	public void commentStartedWithinSingleLineComment() throws IOException {
+		String description = "HelloWorld";
+		List<String> input = new LinkedList<String>();
+		input.add("e // /*");
+		input.add("f");
+
+		List<String> expected = new LinkedList<String>();
+		expected.add("/* " + description + ":1 */" + "e // /*");
+		expected.add("/* " + description + ":2 */" + "f");
+
+		assertEqual(input, expected, description);
+	}
+
+	@Test
 	public void commentCharacterInString() throws IOException {
 		String description = "HelloWorld";
 		List<String> input = new LinkedList<String>();

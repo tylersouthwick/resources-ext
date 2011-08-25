@@ -197,6 +197,7 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 					is = new LineWrapperInputStream(is, description);
 				}
 				FileCopyUtils.copy(is, baos);
+				baos.write('\n');
 			} catch (IOException e) {
 				throw new IllegalStateException("Unable to copy resource file [" + resource.getDescription() + "]", e);
 			}

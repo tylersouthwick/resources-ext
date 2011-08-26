@@ -109,8 +109,14 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	 */
 	@PostConstruct
 	public final void init() {
-		resolveResources();
-		generateResource();
+		try {
+			if (!debug) {
+				resolveResources();
+				generateResource();
+			}
+		} catch (Throwable t) {
+			LOG.error("Unable to initialize resource: " + mapping, t);
+		}
 	}
 
 	/**

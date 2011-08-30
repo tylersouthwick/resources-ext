@@ -25,8 +25,8 @@
 	</licenses>
 
 	<scm>
-		<connection>scm:git:git@github.com:tylersouthwick/resource-ext.git</connection>
-		<developerConnection>scm:git:git@github.com:tylersouthwick/resource-ext.git</developerConnection>
+		<connection>scm:git:git@github.com:tylersouthwick/resources-ext.git</connection>
+		<developerConnection>scm:git:git@github.com:tylersouthwick/resources-ext.git</developerConnection>
 		<url>https://github.com/tylersouthwick/resources-ext</url>
 	</scm>
 

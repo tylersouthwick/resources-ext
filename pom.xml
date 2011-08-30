@@ -320,7 +320,7 @@
 	</build>
 
 	<properties>
-		<spring.version>3.0.5.RELEASE</spring.version>
+		<spring.version>3.0.6.RELEASE</spring.version>
 		<servlet.version>2.5</servlet.version>
 		<slf4j.version>1.6.1</slf4j.version>
 		<yui.version>2.4.6</yui.version>

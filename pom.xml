@@ -10,7 +10,7 @@
 	<artifactId>resources-ext</artifactId>
 	<packaging>jar</packaging>
 	<name>Resources Extension</name>
-	<version>1.0-SNAPSHOT</version>
+	<version>1.0.M1</version>
 	<description>
 		Provides spring handlers to ease development of CSS and JavaScript in large projects.
 	</description>

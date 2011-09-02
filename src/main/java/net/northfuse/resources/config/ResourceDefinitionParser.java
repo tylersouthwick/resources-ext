@@ -82,7 +82,11 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	private Data registerResourceHandler(ParserContext parserContext, Element element, Object source) {
 		RootBeanDefinition handlerDefinition = new RootBeanDefinition(getImplementation());
 
-		handlerDefinition.getPropertyValues().add("debug", element.getAttribute("debug"));
+		String debug = element.getAttribute("debug");
+		if (!StringUtils.hasText(debug)) {
+			debug = "false";
+		}
+		handlerDefinition.getPropertyValues().add("debug", debug);
 		handlerDefinition.setSource(source);
 
 		String resourceMapping = element.getAttribute("mapping");

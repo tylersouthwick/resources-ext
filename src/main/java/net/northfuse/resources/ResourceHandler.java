@@ -50,6 +50,15 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	}
 
 	/**
+	 * Gets whether or not this is in debug mode.
+	 *
+	 * @return debug flag
+	 */
+	public final boolean isDebug() {
+		return debug;
+	}
+
+	/**
 	 * Gets the mapping of this resource.
 	 *
 	 * @return The mapping

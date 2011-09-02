@@ -6,6 +6,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.http.MediaType;
 import org.springframework.util.FileCopyUtils;
 
@@ -26,7 +27,7 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	private boolean debug;
 	private Resource resource;
 	private String mapping;
-	private ApplicationContext applicationContext;
+	private ResourcePatternResolver resourceResolver;
 
 	private static final Logger LOG = LoggerFactory.getLogger(ResourceHandler.class);
 
@@ -82,7 +83,7 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	 */
 	@Override
 	public final void setApplicationContext(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
+		this.resourceResolver = applicationContext;
 	}
 
 	/**
@@ -132,7 +133,7 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 				LOG.debug("resolving resource path [" + resourcePath + "]");
 			}
 			try {
-				Resource[] resources = applicationContext.getResources(resourcePath);
+				Resource[] resources = resourceResolver.getResources(resourcePath);
 				if (debug) {
 					LOG.debug("Found " + resources.length + " resources:");
 					for (Resource resource : resources) {

@@ -33,7 +33,7 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	 */
 	@Override
 	public final BeanDefinition parse(Element element, ParserContext parserContext) {
-		doParse(parserContext, element, false, "");
+		doParse(parserContext, element, false, "", "");
 		return null;
 	}
 
@@ -44,8 +44,9 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	 * @param element The element
 	 * @param defaultDebug the default debug value if not set
 	 * @param baseMapping The base mapping url
+	 * @param defaultOrder The default order
 	 */
-	public final void doParse(ParserContext parserContext, Element element, boolean defaultDebug, String baseMapping) {
+	public final void doParse(ParserContext parserContext, Element element, boolean defaultDebug, String baseMapping, String defaultOrder) {
 		Object source = parserContext.extractSource(element);
 		Data data = registerResourceHandler(parserContext, element, source, defaultDebug, baseMapping);
 
@@ -61,7 +62,14 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 		RootBeanDefinition handlerMappingDefinition = new RootBeanDefinition(SimpleUrlHandlerMapping.class);
 		handlerMappingDefinition.setSource(source);
 		String order = element.getAttribute("order");
-		handlerMappingDefinition.getPropertyValues().add("order", StringUtils.hasText(order) ? order : Ordered.LOWEST_PRECEDENCE - 1);
+		if (!StringUtils.hasText(order)) {
+			if (StringUtils.hasText(defaultOrder)) {
+				order = defaultOrder;
+			} else {
+				order = Integer.toString(Ordered.LOWEST_PRECEDENCE - 1);
+			}
+		}
+		handlerMappingDefinition.getPropertyValues().add("order", order);
 
 		Map<String, String> urlMap = new ManagedMap<String, String>();
 		urlMap.put(resourceMapping, handlerBeanName);

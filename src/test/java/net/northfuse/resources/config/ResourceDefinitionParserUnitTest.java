@@ -4,6 +4,7 @@ import junit.framework.Assert;
 import net.northfuse.resources.ResourceHandler;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 
 /**
  * @author tylers2
@@ -30,5 +31,10 @@ public class ResourceDefinitionParserUnitTest {
 		ResourceHandler resourceHandler = context.getBean(ResourceHandler.class);
 		Assert.assertNotNull(resourceHandler);
 		Assert.assertTrue("The debug value for all scripts/sources in the resource block is true, unless overridden", resourceHandler.isDebug());
+		Assert.assertEquals("/test/test1.js", resourceHandler.getMapping());
+
+		SimpleUrlHandlerMapping mapping = context.getBean(SimpleUrlHandlerMapping.class);
+		Assert.assertNotNull(mapping);
+		Assert.assertSame(25, mapping.getOrder());
 	}
 }

@@ -33,7 +33,7 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	 */
 	@Override
 	public final BeanDefinition parse(Element element, ParserContext parserContext) {
-		doParse(parserContext, element, parserContext.extractSource(element));
+		doParse(parserContext, element, false, "");
 		return null;
 	}
 
@@ -42,10 +42,12 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	 *
 	 * @param parserContext The ParserContext
 	 * @param element The element
-	 * @param source the source
+	 * @param defaultDebug the default debug value if not set
+	 * @param baseMapping The base mapping url
 	 */
-	private void doParse(ParserContext parserContext, Element element, Object source) {
-		Data data = registerResourceHandler(parserContext, element, source);
+	public final void doParse(ParserContext parserContext, Element element, boolean defaultDebug, String baseMapping) {
+		Object source = parserContext.extractSource(element);
+		Data data = registerResourceHandler(parserContext, element, source, defaultDebug, baseMapping);
 
 		if (data == null) {
 			return;
@@ -76,15 +78,17 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	 * @param parserContext The ParserContext
 	 * @param element The element
 	 * @param source the source
+	 * @param defaultDebug the default debug value if not set
+	 * @param baseMapping The base mapping url
 	 *
 	 * @return The resource handler config information
 	 */
-	private Data registerResourceHandler(ParserContext parserContext, Element element, Object source) {
+	private Data registerResourceHandler(ParserContext parserContext, Element element, Object source, boolean defaultDebug, String baseMapping) {
 		RootBeanDefinition handlerDefinition = new RootBeanDefinition(getImplementation());
 
 		String debug = element.getAttribute("debug");
 		if (!StringUtils.hasText(debug)) {
-			debug = "false";
+			debug = Boolean.toString(defaultDebug);
 		}
 		handlerDefinition.getPropertyValues().add("debug", debug);
 		handlerDefinition.setSource(source);
@@ -94,7 +98,7 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 			parserContext.getReaderContext().error("The 'mapping' attribute is required.", parserContext.extractSource(element));
 			return null;
 		}
-		handlerDefinition.getPropertyValues().add("mapping", resourceMapping);
+		handlerDefinition.getPropertyValues().add("mapping", baseMapping + resourceMapping);
 
 		//find resource locations
 		handlerDefinition.getPropertyValues().add("resources", findLocations(element));
@@ -119,26 +123,8 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	private List<String> findLocations(Element element) {
 		List<String> resources = new LinkedList<String>();
 
-		final NodeList nodeList = element.getElementsByTagNameNS("http://northfuse.net/schema/resources-ext", "resource");
-		final Iterator<Node> i = new Iterator<Node>() {
-			private int count = 0;
-			public boolean hasNext() {
-				return count < nodeList.getLength();
-			}
-
-			public Node next() {
-				return nodeList.item(count++);
-			}
-
-			public void remove() {
-			}
-		};
-		for (Node node : new Iterable<Node>() {
-			public Iterator<Node> iterator() {
-				return i;
-			}
-		}) {
-			Element e = (Element) node;
+		final NodeList nodeList = element.getElementsByTagNameNS(ResourceNamespaceHandler.NAMESPACE, "resource");
+		for (Element e : new NodeListIterator<Element>(nodeList)) {
 			resources.add(e.getAttribute("location"));
 		}
 		return resources;

@@ -20,4 +20,15 @@ public class ResourceDefinitionParserUnitTest {
 		Assert.assertNotNull(resourceHandler);
 		Assert.assertFalse("By default, a resource is not in debug mode", resourceHandler.isDebug());
 	}
+
+	@Test
+	public void checkDefaultInResourcesElement() {
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext();
+		context.setConfigLocation("classpath:/net/northfuse/resources/config/defaultDebug-context.xml");
+		context.refresh();
+
+		ResourceHandler resourceHandler = context.getBean(ResourceHandler.class);
+		Assert.assertNotNull(resourceHandler);
+		Assert.assertTrue("The debug value for all scripts/sources in the resource block is true, unless overridden", resourceHandler.isDebug());
+	}
 }

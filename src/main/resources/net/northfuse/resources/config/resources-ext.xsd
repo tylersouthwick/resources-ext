@@ -21,6 +21,22 @@
 		</xsd:annotation>
 	</xsd:element>
 
+	<xsd:element name="resources" type="tns:ResourcesType">
+		<xsd:annotation>
+			<xsd:documentation><![CDATA[
+			]]></xsd:documentation>
+		</xsd:annotation>
+	</xsd:element>
+	<xsd:complexType name="ResourcesType">
+		<xsd:sequence>
+			<xsd:element name="script" type="tns:ResourceHandlerType" maxOccurs="unbounded" minOccurs="0" />
+			<xsd:element name="style" type="tns:ResourceHandlerType" maxOccurs="unbounded" minOccurs="0" />
+		</xsd:sequence>
+		<xsd:attribute name="order" type="xsd:int" />
+		<xsd:attribute name="mapping" type="xsd:string" />
+		<xsd:attribute name="debug" type="xsd:boolean" />
+	</xsd:complexType>
+
 	<xsd:complexType name="ResourceHandlerType">
 		<xsd:sequence>
 			<xsd:element name="resource" type="tns:ResourceType" maxOccurs="unbounded" minOccurs="1"/>

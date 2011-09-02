@@ -13,7 +13,6 @@ import org.springframework.util.FileCopyUtils;
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -96,10 +95,10 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	}
 
 	/**
-	 * Gets the last modified time
+	 * Gets the last modified time.
 	 * @return the last modified time
 	 */
-	public long lastModified() {
+	public final long lastModified() {
 		return lastModified;
 	}
 
@@ -200,6 +199,10 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 		return resource;
 	}
 
+	/**
+	 * Finds the last modified time of the newest resource.
+	 * @return the last modified time
+	 */
 	private long findLastModifiedTime() {
 		long lastModified = -1;
 		for (Resource resource : resources) {

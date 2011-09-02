@@ -3,7 +3,6 @@ package net.northfuse.resources.config;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.xml.BeanDefinitionParser;
 import org.springframework.beans.factory.xml.ParserContext;
-import org.springframework.util.StringUtils;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
@@ -30,7 +29,7 @@ public class ResourcesDefinitionParser implements BeanDefinitionParser {
 	 * {@inheritDoc}
 	 */
 	@Override
-	public BeanDefinition parse(Element element, ParserContext parserContext) {
+	public final BeanDefinition parse(Element element, ParserContext parserContext) {
 		boolean debug = "true".equals(element.getAttribute("debug"));
 		String order = element.getAttribute("order");
 		String mapping = element.getAttribute("mapping");
@@ -51,7 +50,8 @@ public class ResourcesDefinitionParser implements BeanDefinitionParser {
 	 * @param mapping The base mapping
 	 * @param order The default order
 	 */
-	private void handleElement(Element element, String name, ResourceDefinitionParser parser, ParserContext parserContext, boolean debug, String mapping, String order) {
+	private void handleElement(Element element, String name, ResourceDefinitionParser parser,
+	                           ParserContext parserContext, boolean debug, String mapping, String order) {
 		final NodeList nodeList = element.getElementsByTagNameNS(ResourceNamespaceHandler.NAMESPACE, name);
 		for (Element e : new NodeListIterator<Element>(nodeList)) {
 			parser.doParse(parserContext, e, debug, mapping, order);

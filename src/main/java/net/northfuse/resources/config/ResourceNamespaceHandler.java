@@ -7,7 +7,7 @@ import org.springframework.beans.factory.xml.NamespaceHandlerSupport;
  */
 public final class ResourceNamespaceHandler extends NamespaceHandlerSupport {
 
-	public final static String NAMESPACE = "http://northfuse.net/schema/resources-ext";
+	public static final String NAMESPACE = "http://northfuse.net/schema/resources-ext";
 
 	/**
 	 * Registers the bean definition parsers for the script and style config elements.

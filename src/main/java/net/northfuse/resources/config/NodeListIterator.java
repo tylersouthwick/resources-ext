@@ -6,15 +6,26 @@ import org.w3c.dom.NodeList;
 import java.util.Iterator;
 
 /**
+ * Converts a node list to an iterable.
+ *
+ * @param <T> Some type that extends Node
+ *
  * @author tylers2
  */
-public class NodeListIterator<T extends Node> implements Iterable<T> {
+public final class NodeListIterator<T extends Node> implements Iterable<T> {
 	private final NodeList nodeList;
 
+	/**
+	 * Creates a NodeListIterator.
+	 * @param nodeList A node list
+	 */
 	public NodeListIterator(NodeList nodeList) {
 		this.nodeList = nodeList;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Iterator<T> iterator() {
 		return new Iterator<T>() {

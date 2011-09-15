@@ -13,6 +13,7 @@ import org.springframework.util.FileCopyUtils;
 import javax.annotation.PostConstruct;
 import java.io.*;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,7 +28,6 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	private Resource resource;
 	private String mapping;
 	private ResourcePatternResolver resourceResolver;
-	private long lastModified = -1;
 
 	private static final Logger LOG = LoggerFactory.getLogger(ResourceHandler.class);
 
@@ -101,14 +101,6 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	 */
 	public final void setResourceResolver(ResourcePatternResolver resourceResolver) {
 		this.resourceResolver = resourceResolver;
-	}
-
-	/**
-	 * Gets the last modified time.
-	 * @return the last modified time
-	 */
-	public final long lastModified() {
-		return lastModified;
 	}
 
 	/**
@@ -187,17 +179,12 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 	 * @return The constructed resource
 	 */
 	private Resource buildResource(boolean minify) {
-		final long newLastModified = findLastModifiedTime();
-		if (newLastModified <= lastModified && resource != null) {
-			return resource;
-		}
-		lastModified = newLastModified;
 		final byte[] data = aggregate(minify);
-		LOG.debug("Built resource with " + data.length + " bytes @" + lastModified);
+		LOG.debug("Built resource with " + data.length + " bytes @" + new Date());
 		resource = new ByteArrayResource(data) {
 			@Override
 			public long lastModified() throws IOException {
-				return newLastModified;
+				return -1;
 			}
 
 			@Override
@@ -206,25 +193,6 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 			}
 		};
 		return resource;
-	}
-
-	/**
-	 * Finds the last modified time of the newest resource.
-	 * @return the last modified time
-	 */
-	private long findLastModifiedTime() {
-		long lastModified = -1;
-		for (Resource resource : resources) {
-			try {
-				long resourceLastModified = resource.lastModified();
-				if (resourceLastModified > lastModified) {
-					lastModified = resourceLastModified;
-				}
-			} catch (IOException e) {
-				LOG.debug("couldn't get resource last modified time", e);
-			}
-		}
-		return lastModified;
 	}
 
 	/**

@@ -10,7 +10,7 @@ import java.io.*;
 /**
  * @author tylers2
  */
-public final class StyleResourceHandler extends ResourceHandler {
+public final class StyleResourceHandler extends ResourceHandlerImpl {
 
 	private static final Logger LOG = LoggerFactory.getLogger(StyleResourceHandler.class);
 

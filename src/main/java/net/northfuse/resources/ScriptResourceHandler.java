@@ -12,7 +12,7 @@ import java.io.*;
 /**
  * @author tylers2
  */
-public final class ScriptResourceHandler extends ResourceHandler {
+public final class ScriptResourceHandler extends ResourceHandlerImpl {
 
 	private static final Logger LOG = LoggerFactory.getLogger(ScriptResourceHandler.class);
 

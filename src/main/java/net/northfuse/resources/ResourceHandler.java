@@ -12,10 +12,7 @@ import org.springframework.util.FileCopyUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author tylers2
@@ -157,7 +154,14 @@ public abstract class ResourceHandler implements ApplicationContextAware {
 						LOG.debug("\t" + resource.getDescription());
 					}
 				}
-				this.resources.addAll(Arrays.asList(resources));
+				List<Resource> resourceList = new ArrayList<Resource>(Arrays.asList(resources));
+				Collections.sort(resourceList, new Comparator<Resource>() {
+					@Override
+					public int compare(Resource o1, Resource o2) {
+						return o1.getDescription().compareTo(o2.getDescription());
+					}
+				});
+				this.resources.addAll(resourceList);
 			} catch (IOException e) {
 				throw new IllegalStateException("Unable to get resources for resourcePath [" + resourcePath + "]", e);
 			}

@@ -100,7 +100,7 @@ public abstract class ResourceHandlerImpl implements ResourceHandler, Applicatio
 	 * {@inheritDoc}
 	 */
 	@Override
-	public final Resource aggregatedResource() {
+	public final Resource getAggregatedResource() {
 		if (debug) {
 			synchronized (this.resources) {
 				this.resources.clear();

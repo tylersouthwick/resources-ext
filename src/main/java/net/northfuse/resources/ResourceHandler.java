@@ -27,7 +27,7 @@ public interface ResourceHandler {
 	 *
 	 * @return a non-null resource
 	 */
-	Resource aggregatedResource();
+	Resource getAggregatedResource();
 
 	/**
 	 * Gets the media type.

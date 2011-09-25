@@ -43,7 +43,7 @@ public final class ResourceHandlerAdapter extends WebContentGenerator implements
 	public ModelAndView handle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
 		checkAndPrepare(request, response, true);
 		ResourceHandler handler = (ResourceHandler) o;
-		Resource resource = handler.aggregatedResource();
+		Resource resource = handler.getAggregatedResource();
 
 		// check the resource's media type
 		MediaType mediaType = handler.getMediaType();

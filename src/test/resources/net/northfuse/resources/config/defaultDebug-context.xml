@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://northfuse.net/schema/resources-ext http://northfuse.net/schema/resources-ext-1.0.xsd">
+
+	<resources debug="true" mapping="/test" order="25" xmlns="http://northfuse.net/schema/resources-ext">
+		<script mapping="/test1.js">
+			<resource location="classpath*:/test.js"/>
+		</script>
+	</resources>
+
+</beans>

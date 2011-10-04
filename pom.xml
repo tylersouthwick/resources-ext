@@ -55,6 +55,16 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava-collections</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.guava</groupId>
+				<artifactId>guava-base</artifactId>
+				<version>${guava.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-core</artifactId>
 				<version>${spring.version}</version>
@@ -115,6 +125,14 @@
 	</dependencyManagement>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava-base</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava-collections</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>com.yahoo.platform.yui</groupId>
 			<artifactId>yuicompressor</artifactId>
@@ -331,5 +349,6 @@
 		<findbugs.version>2.3.2</findbugs.version>
 		<changelog.version>2.2</changelog.version>
 		<cobertura.version>2.5.1</cobertura.version>
+		<guava.version>r03</guava.version>
 	</properties>
 </project>

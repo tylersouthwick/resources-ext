@@ -1,5 +1,6 @@
 package net.northfuse.resources.config;
 
+import net.northfuse.resources.ResourceGenerator;
 import net.northfuse.resources.ResourceHandler;
 import net.northfuse.resources.ResourceHandlerAdapter;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -12,7 +13,6 @@ import org.springframework.core.Ordered;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import java.util.*;
@@ -33,7 +33,7 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	 */
 	@Override
 	public final BeanDefinition parse(Element element, ParserContext parserContext) {
-		doParse(parserContext, element, parserContext.extractSource(element));
+		doParse(parserContext, element, false, "", "");
 		return null;
 	}
 
@@ -42,10 +42,13 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	 *
 	 * @param parserContext The ParserContext
 	 * @param element The element
-	 * @param source the source
+	 * @param defaultDebug the default debug value if not set
+	 * @param baseMapping The base mapping url
+	 * @param defaultOrder The default order
 	 */
-	private void doParse(ParserContext parserContext, Element element, Object source) {
-		Data data = registerResourceHandler(parserContext, element, source);
+	public final void doParse(ParserContext parserContext, Element element, boolean defaultDebug, String baseMapping, String defaultOrder) {
+		Object source = parserContext.extractSource(element);
+		Data data = registerResourceHandler(parserContext, element, source, defaultDebug, baseMapping);
 
 		if (data == null) {
 			return;
@@ -59,7 +62,14 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 		RootBeanDefinition handlerMappingDefinition = new RootBeanDefinition(SimpleUrlHandlerMapping.class);
 		handlerMappingDefinition.setSource(source);
 		String order = element.getAttribute("order");
-		handlerMappingDefinition.getPropertyValues().add("order", StringUtils.hasText(order) ? order : Ordered.LOWEST_PRECEDENCE - 1);
+		if (!StringUtils.hasText(order)) {
+			if (StringUtils.hasText(defaultOrder)) {
+				order = defaultOrder;
+			} else {
+				order = Integer.toString(Ordered.LOWEST_PRECEDENCE - 1);
+			}
+		}
+		handlerMappingDefinition.getPropertyValues().add("order", order);
 
 		Map<String, String> urlMap = new ManagedMap<String, String>();
 		urlMap.put(resourceMapping, handlerBeanName);
@@ -76,13 +86,19 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	 * @param parserContext The ParserContext
 	 * @param element The element
 	 * @param source the source
+	 * @param defaultDebug the default debug value if not set
+	 * @param baseMapping The base mapping url
 	 *
 	 * @return The resource handler config information
 	 */
-	private Data registerResourceHandler(ParserContext parserContext, Element element, Object source) {
+	private Data registerResourceHandler(ParserContext parserContext, Element element, Object source, boolean defaultDebug, String baseMapping) {
 		RootBeanDefinition handlerDefinition = new RootBeanDefinition(getImplementation());
 
-		handlerDefinition.getPropertyValues().add("debug", element.getAttribute("debug"));
+		String debug = element.getAttribute("debug");
+		if (!StringUtils.hasText(debug)) {
+			debug = Boolean.toString(defaultDebug);
+		}
+		handlerDefinition.getPropertyValues().add("debug", debug);
 		handlerDefinition.setSource(source);
 
 		String resourceMapping = element.getAttribute("mapping");
@@ -90,11 +106,13 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 			parserContext.getReaderContext().error("The 'mapping' attribute is required.", parserContext.extractSource(element));
 			return null;
 		}
-		handlerDefinition.getPropertyValues().add("mapping", resourceMapping);
+		handlerDefinition.getPropertyValues().add("mapping", baseMapping + resourceMapping);
 
 		//find resource locations
-		handlerDefinition.getPropertyValues().add("resources", findLocations(element));
+		RootBeanDefinition generatorDefinition = new RootBeanDefinition(ResourceGenerator.class.getName());
+		generatorDefinition.getPropertyValues().add("resources", findLocations(element));
 
+		handlerDefinition.getPropertyValues().add("resourceGenerator", generatorDefinition);
 		String handlerBeanName = parserContext.getReaderContext().generateBeanName(handlerDefinition);
 		parserContext.getRegistry().registerBeanDefinition(handlerBeanName, handlerDefinition);
 		parserContext.registerBeanComponent(new BeanComponentDefinition(handlerDefinition, handlerBeanName));
@@ -115,26 +133,8 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	private List<String> findLocations(Element element) {
 		List<String> resources = new LinkedList<String>();
 
-		final NodeList nodeList = element.getElementsByTagNameNS("http://northfuse.net/schema/resources-ext", "resource");
-		final Iterator<Node> i = new Iterator<Node>() {
-			private int count = 0;
-			public boolean hasNext() {
-				return count < nodeList.getLength();
-			}
-
-			public Node next() {
-				return nodeList.item(count++);
-			}
-
-			public void remove() {
-			}
-		};
-		for (Node node : new Iterable<Node>() {
-			public Iterator<Node> iterator() {
-				return i;
-			}
-		}) {
-			Element e = (Element) node;
+		final NodeList nodeList = element.getElementsByTagNameNS(ResourceNamespaceHandler.NAMESPACE, "resource");
+		for (Element e : new NodeListIterator<Element>(nodeList)) {
 			resources.add(e.getAttribute("location"));
 		}
 		return resources;

@@ -1,5 +1,6 @@
 package net.northfuse.resources;
 
+import com.google.common.base.Predicate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -12,6 +13,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+
+import static com.google.common.collect.Iterables.filter;
+import static com.google.common.collect.Lists.newLinkedList;
+import static java.util.Arrays.asList;
 
 /**
  * @author tylers2
@@ -61,21 +66,28 @@ public final class ResourceGenerator implements ApplicationContextAware {
 				LOG.debug("resolving resource path [" + resourcePath + "]");
 			}
 			try {
-				Resource[] resources = resourceResolver.getResources(resourcePath);
+				List<Resource> resources = newLinkedList(
+						filter(asList(resourceResolver.getResources(resourcePath)),
+								new Predicate<Resource>() {
+									@Override
+									public boolean apply(Resource input) {
+										return !input.getDescription().contains("webinf");
+									}
+								}));
+
 				if (debug) {
-					LOG.debug("Found " + resources.length + " resources:");
+					LOG.debug("Found " + resources.size() + " resources:");
 					for (Resource resource : resources) {
 						LOG.debug("\t" + resource.getDescription());
 					}
 				}
-				List<Resource> resourceList = new ArrayList<Resource>(Arrays.asList(resources));
-				Collections.sort(resourceList, new Comparator<Resource>() {
+				Collections.sort(resources, new Comparator<Resource>() {
 					@Override
 					public int compare(Resource o1, Resource o2) {
 						return o1.getDescription().compareTo(o2.getDescription());
 					}
 				});
-				resolvedResources.addAll(resourceList);
+				resolvedResources.addAll(resources);
 			} catch (IOException e) {
 				throw new IllegalStateException("Unable to get resources for resourcePath [" + resourcePath + "]", e);
 			}
@@ -93,14 +105,7 @@ public final class ResourceGenerator implements ApplicationContextAware {
 		for (Resource resource : resolveResources()) {
 			try {
 				LOG.debug("Adding " + resource.getDescription());
-				InputStream is = resource.getInputStream();
-				String description = resource.getDescription();
-				String text = "/WEB-INF/classes";
-				int index = description.indexOf(text);
-				if (index > 0) {
-					description = description.substring(index + text.length());
-				}
-				is = new LineWrapperInputStream(is, description);
+				InputStream is = new LineWrapperInputStream(resource.getInputStream(), resource.getDescription());
 				FileCopyUtils.copy(is, baos);
 				baos.write('\n');
 			} catch (IOException e) {

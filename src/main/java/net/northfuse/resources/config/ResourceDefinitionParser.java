@@ -1,5 +1,6 @@
 package net.northfuse.resources.config;
 
+import net.northfuse.resources.ResourceGenerator;
 import net.northfuse.resources.ResourceHandler;
 import net.northfuse.resources.ResourceHandlerAdapter;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -108,8 +109,10 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 		handlerDefinition.getPropertyValues().add("mapping", baseMapping + resourceMapping);
 
 		//find resource locations
-		handlerDefinition.getPropertyValues().add("resources", findLocations(element));
+		RootBeanDefinition generatorDefinition = new RootBeanDefinition(ResourceGenerator.class.getName());
+		generatorDefinition.getPropertyValues().add("resources", findLocations(element));
 
+		handlerDefinition.getPropertyValues().add("resourceGenerator", generatorDefinition);
 		String handlerBeanName = parserContext.getReaderContext().generateBeanName(handlerDefinition);
 		parserContext.getRegistry().registerBeanDefinition(handlerBeanName, handlerDefinition);
 		parserContext.registerBeanComponent(new BeanComponentDefinition(handlerDefinition, handlerBeanName));

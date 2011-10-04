@@ -89,17 +89,6 @@ public final class ResourceGenerator implements ApplicationContextAware {
 	 * @return The constructed resource
 	 */
 	public AggregatedResource getAggregatedResource() {
-		final byte[] data = aggregate();
-		LOG.debug("Built resource with " + data.length + " bytes @" + new Date());
-		return new AggregatedResource(data);
-	}
-
-	/**
-	 * Aggregates the resources.
-	 *
-	 * @return A non-null byte array
-	 */
-	private byte[] aggregate() {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		for (Resource resource : resolveResources()) {
 			try {
@@ -118,6 +107,10 @@ public final class ResourceGenerator implements ApplicationContextAware {
 				throw new IllegalStateException("Unable to copy resource file [" + resource.getDescription() + "]", e);
 			}
 		}
-		return baos.toByteArray();
+
+		final byte[] data = baos.toByteArray();
+		LOG.debug("Built resource with " + data.length + " bytes @" + new Date());
+
+		return new AggregatedResource(data);
 	}
 }

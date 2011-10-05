@@ -5,7 +5,7 @@
 	 <skin>
 		 <groupId>net.northfuse</groupId>
 		 <artifactId>site-theme</artifactId>
-		 <version>1.0-SNAPSHOT</version>
+		 <version>1.0.0.M1</version>
 	 </skin>
 
 	<body>

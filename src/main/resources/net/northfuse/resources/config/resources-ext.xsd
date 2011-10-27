@@ -34,7 +34,7 @@
 		</xsd:sequence>
 		<xsd:attribute name="order" type="xsd:int" />
 		<xsd:attribute name="mapping" type="xsd:string" />
-		<xsd:attribute name="debug" type="xsd:boolean" />
+		<xsd:attribute name="debug" type="xsd:string" />
 	</xsd:complexType>
 
 	<xsd:complexType name="ResourceHandlerType">

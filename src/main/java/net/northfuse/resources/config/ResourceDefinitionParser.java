@@ -33,7 +33,7 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	 */
 	@Override
 	public final BeanDefinition parse(Element element, ParserContext parserContext) {
-		doParse(parserContext, element, false, "", "");
+		doParse(parserContext, element, "false", "", "");
 		return null;
 	}
 
@@ -46,7 +46,7 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	 * @param baseMapping The base mapping url
 	 * @param defaultOrder The default order
 	 */
-	public final void doParse(ParserContext parserContext, Element element, boolean defaultDebug, String baseMapping, String defaultOrder) {
+	public final void doParse(ParserContext parserContext, Element element, String defaultDebug, String baseMapping, String defaultOrder) {
 		Object source = parserContext.extractSource(element);
 		Data data = registerResourceHandler(parserContext, element, source, defaultDebug, baseMapping);
 
@@ -91,12 +91,12 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 	 *
 	 * @return The resource handler config information
 	 */
-	private Data registerResourceHandler(ParserContext parserContext, Element element, Object source, boolean defaultDebug, String baseMapping) {
+	private Data registerResourceHandler(ParserContext parserContext, Element element, Object source, String defaultDebug, String baseMapping) {
 		RootBeanDefinition handlerDefinition = new RootBeanDefinition(getImplementation());
 
 		String debug = element.getAttribute("debug");
 		if (!StringUtils.hasText(debug)) {
-			debug = Boolean.toString(defaultDebug);
+			debug = defaultDebug;
 		}
 		handlerDefinition.getPropertyValues().add("debug", debug);
 		handlerDefinition.setSource(source);

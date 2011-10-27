@@ -1,10 +1,12 @@
 package net.northfuse.resources.config;
 
-import junit.framework.Assert;
 import net.northfuse.resources.ResourceHandler;
 import org.junit.Test;
+import org.junit.Assert;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.web.servlet.handler.SimpleUrlHandlerMapping;
+
+import java.util.Map;
 
 /**
  * @author tylers2
@@ -52,6 +54,11 @@ public class ResourceDefinitionParserUnitTest {
 		SimpleUrlHandlerMapping mapping = context.getBean(SimpleUrlHandlerMapping.class);
 		Assert.assertNotNull(mapping);
 		Assert.assertSame(25, mapping.getOrder());
+
+		Map<String, ?> mappings = mapping.getUrlMap();
+		Assert.assertNotNull(mappings);
+		Assert.assertEquals(1, mappings.size());
+		Assert.assertEquals("/test/test1.js", mappings.keySet().iterator().next());
 	}
 
 	public static boolean IN_DEBUG_MODE = true;

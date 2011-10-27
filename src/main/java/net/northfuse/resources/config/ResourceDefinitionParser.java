@@ -119,7 +119,7 @@ abstract class ResourceDefinitionParser<T extends ResourceHandler> implements Be
 
 		Data data = new Data();
 		data.handlerBeanName = handlerBeanName;
-		data.resourceMapping = resourceMapping;
+		data.resourceMapping = baseMapping + resourceMapping;
 		return data;
 	}
 

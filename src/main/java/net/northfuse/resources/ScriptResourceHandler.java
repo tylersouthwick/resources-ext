@@ -39,6 +39,7 @@ public final class ScriptResourceHandler extends ResourceHandlerImpl {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PrintWriter writer = new PrintWriter(baos);
 		compressor.compress(writer, linebreak, munge, verbose, preserveAllSemiColons, disableOptimizations);
+		writer.close();
 		return new ByteArrayInputStream(baos.toByteArray());
 	}
 

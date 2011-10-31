@@ -79,7 +79,7 @@ public abstract class ResourceHandlerImpl implements ResourceHandler {
 	public final Resource getAggregatedResource() {
 		if (debug) {
 			LOG.debug("Loading resource: " + getMapping());
-			Resource resource = resourceGenerator.getAggregatedResource();
+			Resource resource = resourceGenerator.getAggregatedResource(true);
 			LOG.debug("Loaded resource: " + getMapping());
 			return resource;
 		} else {
@@ -96,7 +96,7 @@ public abstract class ResourceHandlerImpl implements ResourceHandler {
 	public final void init() throws IOException {
 		if (!debug) {
 			LOG.info("Initializing resource: " + getMapping());
-			AggregatedResource resource = resourceGenerator.getAggregatedResource();
+			AggregatedResource resource = resourceGenerator.getAggregatedResource(false);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			InputStream is = wrapWithMinify(resource.getInputStream());
 			FileCopyUtils.copy(is, baos);

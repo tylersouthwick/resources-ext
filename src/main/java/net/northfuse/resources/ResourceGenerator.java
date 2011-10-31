@@ -98,14 +98,20 @@ public final class ResourceGenerator implements ApplicationContextAware {
 	/**
 	 * Builds the resource from all the given resources.
 	 *
+	 * @param debug Whether or not in debug mode
 	 * @return The constructed resource
 	 */
-	public AggregatedResource getAggregatedResource() {
+	public AggregatedResource getAggregatedResource(boolean debug) {
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		for (Resource resource : resolveResources()) {
 			try {
 				LOG.debug("Adding " + resource.getDescription());
-				InputStream is = new LineWrapperInputStream(resource.getInputStream(), resource.getDescription());
+				InputStream is;
+				if (debug) {
+					is = new LineWrapperInputStream(resource.getInputStream(), resource.getDescription());
+				} else {
+					is = resource.getInputStream();
+				}
 				FileCopyUtils.copy(is, baos);
 				baos.write('\n');
 			} catch (IOException e) {

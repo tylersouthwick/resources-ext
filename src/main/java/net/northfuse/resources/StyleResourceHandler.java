@@ -10,6 +10,8 @@ import java.io.*;
  */
 public final class StyleResourceHandler extends ResourceHandlerImpl {
 
+	private static final int LINEBREAK = 800;
+
 	/**
 	 * Creates a StyleResourceHandler.
 	 */
@@ -25,7 +27,7 @@ public final class StyleResourceHandler extends ResourceHandlerImpl {
 		CssCompressor compressor = new CssCompressor(new InputStreamReader(is));
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		PrintWriter writer = new PrintWriter(baos);
-		compressor.compress(writer, 0);
+		compressor.compress(writer, LINEBREAK);
 		writer.close();
 		return new ByteArrayInputStream(baos.toByteArray());
 	}

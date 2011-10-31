@@ -1,10 +1,12 @@
 package net.northfuse.resources;
 
+/*
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.yahoo.platform.yui.compressor.JavaScriptCompressor;
 import org.mozilla.javascript.ErrorReporter;
 import org.mozilla.javascript.EvaluatorException;
+*/
 import org.springframework.http.MediaType;
 
 import java.io.*;
@@ -14,7 +16,8 @@ import java.io.*;
  */
 public final class ScriptResourceHandler extends ResourceHandlerImpl {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ScriptResourceHandler.class);
+	//private static final Logger LOG = LoggerFactory.getLogger(ScriptResourceHandler.class);
+//	private static final int LINEBREAK = 800;
 
 	/**
 	 * Creates a ScriptResourceHandler.
@@ -28,11 +31,12 @@ public final class ScriptResourceHandler extends ResourceHandlerImpl {
 	 */
 	@Override
 	protected InputStream wrapWithMinify(InputStream is) throws IOException {
-		int linebreak = 0;
+		/*
+		int linebreak = LINEBREAK;
 		boolean munge = true;
 		boolean verbose = false;
-		boolean preserveAllSemiColons = false;
-		boolean disableOptimizations = false;
+		boolean preserveAllSemiColons = true;
+		boolean disableOptimizations = true;
 
 		InputStreamReader reader = new InputStreamReader(is);
 		JavaScriptCompressor compressor = new JavaScriptCompressor(reader, errorReporter);
@@ -41,8 +45,11 @@ public final class ScriptResourceHandler extends ResourceHandlerImpl {
 		compressor.compress(writer, linebreak, munge, verbose, preserveAllSemiColons, disableOptimizations);
 		writer.close();
 		return new ByteArrayInputStream(baos.toByteArray());
+		*/
+		return is;
 	}
 
+	/*
 	private final ErrorReporter errorReporter = new ErrorReporter() {
 		@Override
 		public void warning(String message, String sourceName, int line, String lineSource, int lineOffset) {
@@ -63,4 +70,5 @@ public final class ScriptResourceHandler extends ResourceHandlerImpl {
 			return null;
 		}
 	};
+	*/
 }

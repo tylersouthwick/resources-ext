@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<rss version="0.91">
+  <channel>
+    <title>Resources Extension - Checkstyle report</title>
+    <link>http://northfuse.net/resource-ext</link>
+    <description>Resources Extension - Checkstyle report</description>
+    <language>en-us</language>
+    <copyright>&#169;2012</copyright>
+    <item>
+      <title>File: 16,
+             Errors: 0,
+             Warnings: 0,
+             Infos: 0
+      </title>
+            <link>http://northfuse.net/resource-ext/checkstyle.html</link>
+      <description>
+        <p>Click <a href="http://northfuse.net/resource-ext/checkstyle.html">here</a> for the full Checkstyle report.</p>
+
+        <table summary="Files" boder="1">
+          <thead>
+            <tr>
+              <th>Files</th>
+              <th style="width:30px;"><abbr title="Info">I</abbr></th>
+              <th style="width:30px;"><abbr title="Warning">W</abbr></th>
+              <th style="width:30px;"><abbr title="Error">E</abbr></th>
+            </tr>
+          </thead>
+          <tbody>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.ResourceHandler.java">net/northfuse/resources/ResourceHandler.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.config.StyleDefinitionParser.java">net/northfuse/resources/config/StyleDefinitionParser.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.config.package-info.java">net/northfuse/resources/config/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.ScriptResourceHandler.java">net/northfuse/resources/ScriptResourceHandler.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.config.ResourcesDefinitionParser.java">net/northfuse/resources/config/ResourcesDefinitionParser.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.config.NodeListIterator.java">net/northfuse/resources/config/NodeListIterator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.StyleResourceHandler.java">net/northfuse/resources/StyleResourceHandler.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.config.ScriptDefinitionParser.java">net/northfuse/resources/config/ScriptDefinitionParser.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.package-info.java">net/northfuse/resources/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.config.ResourceDefinitionParser.java">net/northfuse/resources/config/ResourceDefinitionParser.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.ResourceHandlerImpl.java">net/northfuse/resources/ResourceHandlerImpl.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.AggregatedResource.java">net/northfuse/resources/AggregatedResource.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.LineWrapperInputStream.java">net/northfuse/resources/LineWrapperInputStream.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.ResourceHandlerAdapter.java">net/northfuse/resources/ResourceHandlerAdapter.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.ResourceGenerator.java">net/northfuse/resources/ResourceGenerator.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://northfuse.net/resource-ext/checkstyle.html#net.northfuse.resources.config.ResourceNamespaceHandler.java">net/northfuse/resources/config/ResourceNamespaceHandler.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                      </tbody>
+        </table>
+        
+      </description>
+    </item>
+  </channel>
+</rss>
+

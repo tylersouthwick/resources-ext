@@ -38,9 +38,8 @@
 
 	<distributionManagement>
 		<site>
-			<id>site.website</id>
-			<name>Northfuse Site</name>
-			<url>scp://tyler@northfuse.net/data/sites/resources-ext</url>
+			<id>site.github</id>
+			<url>gitsite:git@github.com/tylersouthwick/resources-ext.git</url>
 		</site>
 	</distributionManagement>
 
@@ -279,11 +278,26 @@
 				<artifactId>maven-site-plugin</artifactId>
 				<version>${mavenSitePlugin.version}</version>
 				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.wagon</groupId>
-						<artifactId>wagon-ssh</artifactId>
-						<version>1.0</version>
-					</dependency>
+				<dependency>
+					<groupId>org.apache.maven.wagon</groupId>
+					<artifactId>wagon-scm</artifactId>
+					<version>2.2</version>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.maven.scm</groupId>
+					<artifactId>maven-scm-manager-plexus</artifactId>
+					<version>1.5</version>
+				</dependency>
+				<dependency>
+					<groupId>org.apache.maven.scm</groupId>
+					<artifactId>maven-scm-provider-gitexe</artifactId>
+					<version>1.5</version>
+				</dependency>
+				<dependency>
+					<groupId>org.kathrynhuxtable.maven.wagon</groupId>
+					<artifactId>wagon-gitsite</artifactId>
+					<version>0.4-SNAPSHOT</version>
+				</dependency>
 				</dependencies>
 				<configuration>
 					<reportPlugins>
